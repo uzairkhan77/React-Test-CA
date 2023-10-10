@@ -8,6 +8,7 @@ import Modal from "@mui/material/Modal";
 
 const Post = () => {
   const [posts, setPosts] = useState([]);
+  const [myPosts, setMyPosts] = useState(false);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -15,6 +16,7 @@ const Post = () => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
+    setMyPosts(!myPosts);
     setIsChecked(!isChecked);
   };
 
@@ -85,34 +87,49 @@ const Post = () => {
     }
   }, []);
 
+  const filteredPosts = isChecked
+    ? posts.filter((post) => post.userId === "Me")
+    : posts;
+
   return (
     <>
-      <h1
-        className="text-center"
-        style={{ color: "black", marginTop: "80px", marginBottom: "30px" }}
-      >
-        PostApp - All Posts
-      </h1>
-      {/* toggle button for mypost filter */}
-      <div className="form-check form-switch">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          role="switch"
-          id="flexSwitchCheckDefault"
-          onChange={handleCheckboxChange} // Add onChange event here
-          checked={isChecked} // Set the checked state based on the component state
-        />
-        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-          Default switch checkbox input
-        </label>
+      <div className="container mx-auto" >
+        <div className="d-flex justify-content-between align-items-center">
+          <h1
+            className="text-center"
+            style={{ color: "black", marginTop: "80px", marginBottom: "30px" }}
+          >
+            {myPosts?"PostApp - My Posts":"PostApp - All Posts"}
+          </h1>
+          {/* toggle button for mypost filter */}
+          <div className="form-check form-switch">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckDefault"
+              onChange={handleCheckboxChange} // Add onChange event here
+              checked={isChecked} // Set the checked state based on the component state
+            />
+            <label
+              className="form-check-label"
+              htmlFor="flexSwitchCheckDefault"
+            >
+              {myPosts ? "Showing My Posts Only" : "Showing All Posts"}
+            </label>
+          </div>
+          {/* toggle button for mypost filter */}
+        </div>
       </div>
-      {/* toggle button for mypost filter */}
+
+      {filteredPosts.length === 0 && myPosts && (
+  <p className="container">You haven't made any posts yet. Make posts to view.</p>
+)} 
 
       {loading && <Spinner />}
       <div className="container">
         <div className="row">
-          {posts.map((post) => {
+          {filteredPosts.map((post) => {
             return (
               <div className="col-md-4" key={post.id}>
                 <PostItem
@@ -126,7 +143,7 @@ const Post = () => {
         {/* Add the "Add Post" button */}
 
         <div>
-          <Button onClick={handleOpen}>Open modal</Button>
+          <Button onClick={handleOpen}>Make a post</Button>
           <Modal
             open={open}
             onClose={handleClose}
@@ -141,7 +158,7 @@ const Post = () => {
                     <label htmlFor="title">Title:</label>
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control my-2"
                       id="title"
                       name="title"
                       value={formData.title}
@@ -149,10 +166,10 @@ const Post = () => {
                       required
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group my-2">
                     <label htmlFor="description">Description:</label>
                     <textarea
-                      className="form-control"
+                      className="form-control my-2"
                       id="description"
                       name="description"
                       value={formData.description}
@@ -160,7 +177,7 @@ const Post = () => {
                       required
                     ></textarea>
                   </div>
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary my-2">
                     Make Post
                   </button>
                 </form>
