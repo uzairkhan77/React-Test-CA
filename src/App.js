@@ -1,17 +1,18 @@
 import React from 'react'
 import Navbar from './components/Navbar.js'
 import Post from './components/Post.js'
-// import { useState } from 'react';
 import { BrowserRouter as Router,  Route, Routes } from 'react-router-dom';
 import Register from './components/Register.js';
 import Login from './components/Login.js';
+import { AuthContextProvider } from './AuthContext';
 
 const App =() => {
 
 
  
-return (
+return (<AuthContextProvider>
     <Router>
+
     <div>
       <Navbar />
       <Routes>
@@ -21,7 +22,7 @@ return (
         <Route exact path="/" element={<Post />} />
       </Routes>
     </div>
-  </Router>
+  </Router></AuthContextProvider>
   )
 }
 

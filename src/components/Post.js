@@ -78,7 +78,7 @@ const Post = () => {
   useEffect(() => {
     document.title = `All Posts`;
     const storedPosts = JSON.parse(localStorage.getItem("posts")) || [];
-    console.log("All Posts from Local Storage:", storedPosts);
+    // console.log("All Posts from Local Storage:", storedPosts);
     if (storedPosts.length === 0) {
       updatePosts();
     } else {

@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../AuthContext";
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const authContext = useContext(AuthContext); // Use the useContext hook to access AuthContext
   const navigate = useNavigate();
-
 
   const handleRegistration = () => {
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const existingUser = users.find(user => user.email === email);
-  
+
     if (!name || !email || !password) {
       alert('All fields are required.');
     } else if (existingUser) {
@@ -21,19 +21,21 @@ const Register = () => {
       const newUser = { name, email, password };
       users.push(newUser);
       localStorage.setItem('users', JSON.stringify(users));
-      console.log(newUser, "NewUserAddedSuccessfully");
-      console.log(users);
-  
+
+      // Dispatch a REGISTER_SUCCESS action
+      authContext.dispatch({ type: 'REGISTER_SUCCESS' }); // Use authContext.dispatch to dispatch actions
+
+      console.log('Dispatched REGISTER_SUCCESS action'); // Log a message to the console
+
+      alert('Registration successful!');
+
       // Redirect to the login page after successful registration
       navigate('/login');
     }
   };
-  
-  
-  
 
   return (
-    <div className="container" style={{ marginTop: "70px" }}>
+    <div className="container" style={{ marginTop: "100px" }}>
       <div className="mb-3">
         <label htmlFor="exampleFormControlInput1" className="form-label">
           Name
@@ -79,7 +81,9 @@ const Register = () => {
         Your password must be 8-20 characters long, contain letters and numbers,
         and must not contain spaces, special characters, or emoji.
       </div> */}
-      <button className="my-3" onClick={handleRegistration}>Register</button>
+      <button className="my-3" onClick={handleRegistration}>
+        Register
+      </button>
     </div>
   );
 };
