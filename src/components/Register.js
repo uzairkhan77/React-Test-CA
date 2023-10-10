@@ -3,34 +3,34 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const authContext = useContext(AuthContext); // Use the useContext hook to access AuthContext
   const navigate = useNavigate();
 
   const handleRegistration = () => {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const existingUser = users.find(user => user.email === email);
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const existingUser = users.find((user) => user.email === email);
 
     if (!name || !email || !password) {
-      alert('All fields are required.');
+      alert("All fields are required.");
     } else if (existingUser) {
-      alert('Email already exists. Please choose a different email.');
+      alert("Email already exists. Please choose a different email.");
     } else {
       const newUser = { name, email, password };
       users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
+      localStorage.setItem("users", JSON.stringify(users));
 
       // Dispatch a REGISTER_SUCCESS action
-      authContext.dispatch({ type: 'REGISTER_SUCCESS' }); // Use authContext.dispatch to dispatch actions
+      authContext.dispatch({ type: "REGISTER_SUCCESS" }); // Use authContext.dispatch to dispatch actions
 
-      console.log('Dispatched REGISTER_SUCCESS action'); // Log a message to the console
+      console.log("Dispatched REGISTER_SUCCESS action"); // Log a message to the console
 
-      alert('Registration successful!');
+      alert("Registration successful!");
 
       // Redirect to the login page after successful registration
-      navigate('/login');
+      navigate("/login");
     }
   };
 

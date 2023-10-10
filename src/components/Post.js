@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useEffect } from "react";
 import PostItem from "./PostItem";
 import Spinner from "./Spinner";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import NavBar from "./Navbar";
+import { AuthContext } from "../AuthContext";
 
 const Post = () => {
   const [posts, setPosts] = useState([]);
@@ -14,6 +16,7 @@ const Post = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [isChecked, setIsChecked] = useState(false);
+  const {user} = useContext(AuthContext)
 
   const handleCheckboxChange = () => {
     setMyPosts(!myPosts);
@@ -42,7 +45,7 @@ const Post = () => {
     e.preventDefault();
     const { title, description } = formData;
     if (title && description) {
-      const userId = "Me"; // Replace 'YourUserID' with the actual user ID
+      const userId = user.email; // Replace 'YourUserID' with the actual user ID
       addNewPost(
         { userId, id: posts.length + 1, title, body: description },
         userId
@@ -88,18 +91,22 @@ const Post = () => {
   }, []);
 
   const filteredPosts = isChecked
-    ? posts.filter((post) => post.userId === "Me")
+    ? posts.filter((post) => post.userId === user.email)
     : posts;
 
   return (
     <>
-      <div className="container mx-auto" >
+    {/* NavBarr */}
+    <NavBar />
+
+
+      <div className="container mx-auto">
         <div className="d-flex justify-content-between align-items-center">
           <h1
             className="text-center"
             style={{ color: "black", marginTop: "80px", marginBottom: "30px" }}
           >
-            {myPosts?"PostApp - My Posts":"PostApp - All Posts"}
+            {myPosts ? "PostApp - My Posts" : "PostApp - All Posts"}
           </h1>
           {/* toggle button for mypost filter */}
           <div className="form-check form-switch">
@@ -123,8 +130,10 @@ const Post = () => {
       </div>
 
       {filteredPosts.length === 0 && myPosts && (
-  <p className="container">You haven't made any posts yet. Make posts to view.</p>
-)} 
+        <p className="container">
+          You haven't made any posts yet. Make posts to view.
+        </p>
+      )}
 
       {loading && <Spinner />}
       <div className="container">

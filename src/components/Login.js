@@ -1,35 +1,43 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../AuthContext'; // Import the AuthContext
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../AuthContext"; // Import the AuthContext
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { dispatch } = useContext(AuthContext); // Access the dispatch function from AuthContext
 
   const handleLogin = () => {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(u => u.email === email && u.password === password);
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const user = users.find(
+      (u) => u.email === email && u.password === password
+    );
 
     if (user) {
-      dispatch({ type: 'LOGIN_SUCCESS', payload: user });
+      dispatch({ type: "LOGIN_SUCCESS", payload: user });
 
       // Log the user state to the console
-      console.log('Logged in user:', user);
+      console.log("Logged in user:", user);
 
-      alert('Login successful!');
+      alert("Login successful!");
       // Redirect to the dashboard or any other protected route after successful login.
-      navigate('/');
+      navigate("/home");
     } else {
-      dispatch({ type: 'LOGIN_FAILURE', payload: 'Invalid email or password' });
+      dispatch({ type: "LOGIN_FAILURE", payload: "Invalid email or password" });
 
-      alert('Invalid email or password. Please try again.');
+      alert("Invalid email or password. Please try again.");
     }
   };
 
+  const handleRegister = ()=>{
+    navigate("/register")
+    alert("Register new user")
+  }
+
   return (
-    <div className="container" style={{ marginTop: '100px' }}>
+    <div className="container" style={{ marginTop: "100px" }}>
+        <h1 style={{textAlign:"center"}}> Login</h1>
       {/* Your login form JSX */}
       <div className="mb-3">
         <label htmlFor="exampleFormControlInput1" className="form-label">
@@ -58,7 +66,16 @@ const Login = () => {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <button style={{marginTop:"15px"}} onClick={handleLogin}>Login</button>
+      <div style={{ display: "flex", alignItems: "center" }}>
+  <button style={{ marginTop: "15px" }} onClick={handleLogin}>
+    Login
+  </button>
+  <p className="mx-3">OR</p>
+  <button style={{ marginTop: "15px" }} onClick={handleRegister}>
+    Register
+  </button>
+</div>
+
     </div>
   );
 };
