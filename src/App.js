@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Post from "./components/Post.js";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Register from "./components/Register.js";
@@ -7,7 +7,12 @@ import { AuthContext,AuthContextProvider } from "./AuthContext";
 
 const App = () => {
   // eslint-disable-next-line
-  const {user} = useContext(AuthContext)
+  const [userStatus, setUserStatus] = useState(true)
+
+
+  // const checkStatus=()=>{
+
+  // }
 
   return (
     <AuthContextProvider>

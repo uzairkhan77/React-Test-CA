@@ -28,7 +28,7 @@ const NavBar = (props) => {
         style={{ position: "fixed", top: 0, width: "100%", zIndex: 2 }}
       >
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">
+          <Link className="navbar-brand" to="/home">
             Post App
           </Link>
           <button
